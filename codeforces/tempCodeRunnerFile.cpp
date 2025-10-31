@@ -22,9 +22,9 @@ int modpow(int a, int b, int mod = MOD) {
 vector<int> sieve(int n) {
     vector<int> isPrime(n + 1, 1);
     isPrime[0] = isPrime[1] = 0;
-    for (int i = 2; i*i <= n; i++)
+    for (int i = 2; i * i <= n; i++)
         if (isPrime[i])
-            for (int j = i*i; j <= n; j += i)
+            for (int j = i * i; j <= n; j += i)
                 isPrime[j] = 0;
     return isPrime;
 }
@@ -39,40 +39,43 @@ bool isPrime(int n) {
     return true;
 }
 
-void solve(){
-    int n,m,k;
-    cin>>n>>m>>k;
-    vector<int> a(n);
-    vector<int> b(m);
-    for(int i=0;i<n;i++)    cin>>a[i];
-    for(int i=0;i<m;i++)    cin>>b[i];
-    int i=0;
-    int j=0;
-    int cnt =0;
-    while(i<n && j<m){
-        int l=a[i]-k;
-        int u=a[i]+k;
-        if(b[j]<l){
-            j++;
-        }
-        else if(b[j]>u){
-            i++;
-        }
-        else{
-            cnt++;
-            i++;
+void solve() {
+    int n, x;
+    cin >> n >> x;
+    vector<int> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+    sort(v.begin(), v.end());
+
+    ll S = 0;       
+    ll ans = 0;     
+    int l = 0, r = n - 1;
+
+    vector<int> pref;  
+
+    while (l <= r) {
+        if (1ll*(S + v[r]) / 1ll*x > S / x) {
+            S += v[r];
+            ans += v[r];
+            pref.push_back(v[r]);
+            r--;
+        } else {
+            S += v[l];
+            pref.push_back(v[l]);
+            l++;
         }
     }
-    cout<<cnt<<endl;
-}   
 
-int main(){
+    cout << ans / x << "\n";
+    for (auto i : pref) cout << i << " ";
+    cout << "\n";
+}
+
+int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     int t = 1;
-    // cin>>t;
-    while (t--)
-    {
-      solve();
+    cin >> t;
+    while (t--) {
+        solve();
     }
 }
