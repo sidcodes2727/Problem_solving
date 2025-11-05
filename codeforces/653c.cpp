@@ -99,15 +99,32 @@ bool isPrime(int n) {
 void solve() {
     int n;
     cin>>n;
-    vector<int> v(n);
-    for(int i=0;i<n;i++)    cin>>v[i];
-    int x= *min_element(all(v));
-    int y= *max_element(all(v));
-    if(v[0]!= x){
-        pno;
+    if(n==1) {
+        cout<<0<<endl;
         return;
     }
-    pyes;
+    if(n%6!=0 && n%3!=0){
+        cout<<-1<<endl;
+        return;
+    }
+    int cnt=0;
+    while(n!=1){
+        if(n%6!=0 && n%3==0){
+            n*=2;
+            cnt++;
+            continue;
+        }
+        else if(n%6!=0 && n%3!=0 ){
+            cout<<-1<<endl;
+            return;
+        }
+        n/=6;
+        cnt++;
+
+    }
+    cout<<cnt<<endl;
+    
+
 }
 
 int main() {

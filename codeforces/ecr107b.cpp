@@ -97,17 +97,12 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n;
-    cin>>n;
-    vector<int> v(n);
-    for(int i=0;i<n;i++)    cin>>v[i];
-    int x= *min_element(all(v));
-    int y= *max_element(all(v));
-    if(v[0]!= x){
-        pno;
-        return;
-    }
-    pyes;
+        int a, b, c;
+        cin >> a >> b >> c;
+        string s1 ="1"+string(a-1,'0');
+        string s2 = string(b-c+1,'1')+string(c-1,'0');
+        cout<<s1<<" "<<s2<<endl;
+
 }
 
 int main() {

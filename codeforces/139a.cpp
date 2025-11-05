@@ -97,17 +97,25 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n;
-    cin>>n;
-    vector<int> v(n);
-    for(int i=0;i<n;i++)    cin>>v[i];
-    int x= *min_element(all(v));
-    int y= *max_element(all(v));
-    if(v[0]!= x){
-        pno;
-        return;
-    }
-    pyes;
+        int n;
+        cin >> n;
+        string s;
+        cin >> s;
+
+        map<string, int> seen;
+        bool ok = false;
+        for(int i = 0; i < n - 1; i++) {
+            string pair = s.substr(i, 2);
+            if(seen.count(pair) && seen[pair] < i-1) {
+                ok = true;
+                break;
+            }
+
+            if(!seen.count(pair))
+                seen[pair] = i;
+        }
+
+        cout << (ok ? "YES" : "NO") << "\n";
 }
 
 int main() {

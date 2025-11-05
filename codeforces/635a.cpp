@@ -67,7 +67,7 @@ Matrix multiply(Matrix A, Matrix B) {
 }
 
 Matrix power(Matrix M, ll n) {
-    Matrix R = {{{1, 0}, {0, 1}}}; // identity
+    Matrix R = {{{1, 0}, {0, 1}}}; 
     while(n){
         if(n & 1) R = multiply(R, M);
         M = multiply(M, M);
@@ -97,24 +97,21 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n;
-    cin>>n;
-    vector<int> v(n);
-    for(int i=0;i<n;i++)    cin>>v[i];
-    int x= *min_element(all(v));
-    int y= *max_element(all(v));
-    if(v[0]!= x){
-        pno;
-        return;
-    }
-    pyes;
+    ll n;
+    cin >> n;
+
+    Matrix M = {{{3, 1}, {1, 3}}};
+    Matrix Mn = power(M, n);
+
+    ll up = Mn.a[0][0] % MOD;
+    cout << up << "\n";
 }
 
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) {
         solve();
     }
