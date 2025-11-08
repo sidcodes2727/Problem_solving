@@ -97,93 +97,40 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n,k;
-    cin>>n>>k;
-    string s;
-    cin>>s;
-    string t;
-    cin>>t;
-    //edge 
-    // if(s[0]!=t[0]){
-    //     cout<<-1<<endl;
-    //     return;
-    // }
-    // if(s==t){
-    //     cout<<0<<endl;
-    //     return;
-    // }
-    // map<char,int> m1;
-    // map<char,int> m2;
-    // map<char,int> mp;
+    ll n;
+    cin >> n;
+    vector<pair<ll,ll>> p(n);
+    for(int i = 0; i < n; i++){
+        cin >> p[i].first;
+        p[i].second = i;
+    }
     
-    // for(int i=0;i<n;i++){
-    //     mp[s[i]]=i;
-    // }
+    sort(p.begin(), p.end());
 
-    // for(auto i:t){
-    //     if(!mp.count(i))  {
-    //         cout<<-1<<endl;
-    //         return;
-    //     }
-    // }
+    vector<ll> pref(n);
+    vector<ll> nxt(n), res(n);
 
-    // for(int i=n-1;i>=0;i--){
-    //     m1[s[i]]=i;
-    // }
-    // for(int i=n-1;i>=0;i--){
-    //     m2[t[i]]=i;
-    // }
-    // for(int i=0;i<n;i++){
-    //     if(m2[t[i]] < m1[t[i]] ){
-    //         cout<<-1<<endl;
-    //         return;
-    //     }
-    // }
-    // int op=INT_MIN;
-    // for(int i=n-1;i>=0;i--){
-    //     op =max(op,i-mp[t[i]]);
-    // }
+    pref[0] = p[0].first;
+    nxt[0] = 0;
 
-    // if(op>k){
-    //     cout<<-1<<endl;
-    //     return;
-    // }
-    // int temp=op;
-    // vector<string> v;
-    // while(op--){
-    //     if(s==t)    return;
-    //     set<char> st;
-    //     set<char> s2;
-    //     for(int i=n-1;i>=1;i--){
-            
-    //         if((i==n-1)&& s[i]==t[i])   continue;
-    //         // if(s[i]!=t[i]){
-    //         //     if(s[i-1]==t[i])    s[i]=s[i-1];
-    //         //     else    s[i]=s[i-1];
-    //         // }
-    //         if(s[i]==t[i]){
-    //             if(st.find(s[i-1])!=st.end() && s2.find(s[i-1])==s2.end()) s[i] = s[i-1];
-    //         }
-    //         else{
-    //             s[i]=s[i-1];
-    //         }
-    //         st.insert(t[i]);
-    //         s2.insert(s[i]);
-    //     }
-    //     debug(s);
-    //     v.push_back(s);
-    //     // cout<<s<<endl;
-    // }
-    // // if(s!=t) {
-    // //     for(auto i:v)   cout<<i<<endl;
-    // //     cout<<-1<<endl;
-    // //     return;
-    // // }
-    // cout<<temp<<endl;
-    // for(auto i:v)   cout<<i<<endl;
+    for(int i = 1; i < n; i++){
+        pref[i] = pref[i - 1] + p[i].first;
+        nxt[i] = i;
 
-    
+        while(nxt[i] + 1 < n && pref[i] >= p[nxt[i] + 1].first){
+            nxt[i]++;
+            pref[i] += p[nxt[i]].first;
+        }
+    }
 
+    for(int i = 0; i < n; i++){
+        res[p[i].second] = nxt[i];
+    }
+
+    for(int i = 0; i < n; i++){
+        cout << res[i]-1 << " ";
+    }
+    cout <<endl;
 }
 
 int main() {

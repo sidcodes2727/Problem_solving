@@ -12,7 +12,10 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 #define pyes cout<<"YES\n"
 #define pno cout<<"NO\n"
 typedef pair<int,int> pii;
+typedef pair<ll,ll> pll;
 typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<pll> vpll;
 typedef vector<pii> vpii;
 
 const int MOD = 1e9+7;
@@ -74,25 +77,53 @@ bool isPrime(int n) {
     return true;
 }
 
+vector<ll> v, dp;
 
-ll f(ll i,ll sum,vector<ll>&v,ll x,vector<vector<ll>>&dp){
-    if(sum==x) return 0;
-    if(i<0||sum>x) return 1e9;
-    if(dp[i][sum]!=-1) return dp[i][sum];
-    ll take=1+f(i,sum+v[i],v,x,dp);
-    ll skip=f(i-1,sum,v,x,dp);
-    return dp[i][sum]=min(take,skip);
+ll func(ll sum){
+    if(sum == 0) return 0;
+    if(sum < 0) return MOD;
+
+    if(dp[sum] != -1) 
+        return dp[sum];
+
+    ll ans = MOD;
+    for(ll coin : v){
+        ans = min(ans, 1 + func(sum - coin));
+    }
+    return dp[sum] = ans;
 }
 
 void solve(){
-    int n,x; cin>>n>>x;
-    vector<ll>v(n);
-    for(int i=0;i<n;i++) cin>>v[i];
-    sort(v.begin(),v.end());
-    vector<vector<ll>>dp(n,vector<ll>(x+1,-1));
-    ll ans=f(n-1,0,v,x,dp);
-    cout<<(ans>=1e9?-1:ans);
+    ll n, x;
+    cin >> n >> x;
+    v.resize(n);
+    fr(i,n) cin >> v[i];
+
+    dp.assign(x+1, -1);
+
+    ll ans = func(x);
+    if(ans >= MOD) cout << -1 << endl;
+    else cout << ans << endl;
 }
+
+// void solve(){
+//     ll n,x;
+//     cin>>n>>x;
+//     vll v(n);
+//     fr(i,n) cin>>v[i];
+//     vll dp(x+1,MOD);
+//     dp[0]=0;
+//     for(ll i=1;i<=x;i++){
+//         for(ll j=0;j<n;j++){
+//             if(i-v[j]>=0){
+//                 dp[i]=min(dp[i],dp[i-v[j]]+1);
+//             }
+//         }
+//     }
+//     if(dp[x]==MOD) cout<<-1<<endl;
+//     else cout<<dp[x]<<endl;
+
+// }
 
 int main() {
     ios::sync_with_stdio(0);

@@ -67,7 +67,7 @@ Matrix multiply(Matrix A, Matrix B) {
 }
 
 Matrix power(Matrix M, ll n) {
-    Matrix R = {{{1, 0}, {0, 1}}}; // identity
+    Matrix R = {{{1, 0}, {0, 1}}}; 
     while(n){
         if(n & 1) R = multiply(R, M);
         M = multiply(M, M);
@@ -99,92 +99,45 @@ bool isPrime(int n) {
 void solve() {
     int n,k;
     cin>>n>>k;
-    string s;
-    cin>>s;
-    string t;
-    cin>>t;
-    //edge 
-    // if(s[0]!=t[0]){
-    //     cout<<-1<<endl;
-    //     return;
-    // }
-    // if(s==t){
-    //     cout<<0<<endl;
-    //     return;
-    // }
-    // map<char,int> m1;
-    // map<char,int> m2;
-    // map<char,int> mp;
-    
-    // for(int i=0;i<n;i++){
-    //     mp[s[i]]=i;
-    // }
+    vi v(n);
+    fr(i,n) cin>>v[i];
+    vector<int> s; 
 
-    // for(auto i:t){
-    //     if(!mp.count(i))  {
-    //         cout<<-1<<endl;
-    //         return;
-    //     }
-    // }
+    fr(i,n){
+        if((v[i] & k) == k){
+            s.pb(i); 
+        }
+    }
+    if(s.empty()){
+        pno;
+        return;
+    }
 
-    // for(int i=n-1;i>=0;i--){
-    //     m1[s[i]]=i;
-    // }
-    // for(int i=n-1;i>=0;i--){
-    //     m2[t[i]]=i;
-    // }
-    // for(int i=0;i<n;i++){
-    //     if(m2[t[i]] < m1[t[i]] ){
-    //         cout<<-1<<endl;
-    //         return;
-    //     }
-    // }
-    // int op=INT_MIN;
-    // for(int i=n-1;i>=0;i--){
-    //     op =max(op,i-mp[t[i]]);
-    // }
+    for(auto i : s){
+        if(v[i] == k){
+            pyes;
+            cout <<1<<endl;
+            cout <<i+1<< endl; 
+            return;
+        }
+    }
 
-    // if(op>k){
-    //     cout<<-1<<endl;
-    //     return;
-    // }
-    // int temp=op;
-    // vector<string> v;
-    // while(op--){
-    //     if(s==t)    return;
-    //     set<char> st;
-    //     set<char> s2;
-    //     for(int i=n-1;i>=1;i--){
-            
-    //         if((i==n-1)&& s[i]==t[i])   continue;
-    //         // if(s[i]!=t[i]){
-    //         //     if(s[i-1]==t[i])    s[i]=s[i-1];
-    //         //     else    s[i]=s[i-1];
-    //         // }
-    //         if(s[i]==t[i]){
-    //             if(st.find(s[i-1])!=st.end() && s2.find(s[i-1])==s2.end()) s[i] = s[i-1];
-    //         }
-    //         else{
-    //             s[i]=s[i-1];
-    //         }
-    //         st.insert(t[i]);
-    //         s2.insert(s[i]);
-    //     }
-    //     debug(s);
-    //     v.push_back(s);
-    //     // cout<<s<<endl;
-    // }
-    // // if(s!=t) {
-    // //     for(auto i:v)   cout<<i<<endl;
-    // //     cout<<-1<<endl;
-    // //     return;
-    // // }
-    // cout<<temp<<endl;
-    // for(auto i:v)   cout<<i<<endl;
+    int ad = v[s[0]];
+    for(auto i : s){
+        ad &= v[i];
+    }
 
-    
-
+    if(ad == k){
+        pyes;
+        cout << s.size() << endl;
+        for(auto i : s) cout << i+1 << endl; 
+        cout << endl;
+    }
+    else{
+        pno;
+    }
 }
+
 
 int main() {
     ios::sync_with_stdio(0);

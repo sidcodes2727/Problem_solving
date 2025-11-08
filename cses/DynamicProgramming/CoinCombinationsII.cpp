@@ -12,7 +12,10 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 #define pyes cout<<"YES\n"
 #define pno cout<<"NO\n"
 typedef pair<int,int> pii;
+typedef pair<ll,ll> pll;
 typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<pll> vpll;
 typedef vector<pii> vpii;
 
 const int MOD = 1e9+7;
@@ -96,101 +99,56 @@ bool isPrime(int n) {
     return true;
 }
 
+
+// ll f(ll i, ll sum, vll &v, vector<vector<ll>> &dp) {
+//     ll n= v.size();
+//     if (sum == 0) return 1;         
+//     if (i == n) return 0;           
+//     if (dp[i][sum] != -1) return dp[i][sum];
+
+//     ll ways = 0;
+
+//     if (sum-v[i] >= 0) {
+//         ways += f(i, sum-v[i],v,dp)%MOD;
+
+//     }
+//     ways += f(i+1, sum,v,dp)%MOD;
+
+//     return dp[i][sum] = ways;
+// }
+
+// void solve() {
+//     ll n, x;
+//     cin>>n>>x;
+//     vll v(n);
+//     fr(i,n) cin>>v[i];
+
+//     vector<vector<ll>> dp(n,vector<ll>(x+1,-1));
+//     cout<<f(0,x,v, dp)%MOD<<endl;
+// }
+
 void solve() {
-    int n,k;
-    cin>>n>>k;
-    string s;
-    cin>>s;
-    string t;
-    cin>>t;
-    //edge 
-    // if(s[0]!=t[0]){
-    //     cout<<-1<<endl;
-    //     return;
-    // }
-    // if(s==t){
-    //     cout<<0<<endl;
-    //     return;
-    // }
-    // map<char,int> m1;
-    // map<char,int> m2;
-    // map<char,int> mp;
-    
-    // for(int i=0;i<n;i++){
-    //     mp[s[i]]=i;
-    // }
+    ll n, x;
+    cin >> n >> x;
+    vector<ll> v(n);
+    for(auto &i : v) cin >> i;
 
-    // for(auto i:t){
-    //     if(!mp.count(i))  {
-    //         cout<<-1<<endl;
-    //         return;
-    //     }
-    // }
+    vector<ll> dp(x + 1, 0);
+    dp[0]=1;
+    for(auto c : v) {
+        for(ll s = c; s <= x; s++) {
+            dp[s] = (dp[s] + dp[s - c]) % MOD;
+        }
+    }
 
-    // for(int i=n-1;i>=0;i--){
-    //     m1[s[i]]=i;
-    // }
-    // for(int i=n-1;i>=0;i--){
-    //     m2[t[i]]=i;
-    // }
-    // for(int i=0;i<n;i++){
-    //     if(m2[t[i]] < m1[t[i]] ){
-    //         cout<<-1<<endl;
-    //         return;
-    //     }
-    // }
-    // int op=INT_MIN;
-    // for(int i=n-1;i>=0;i--){
-    //     op =max(op,i-mp[t[i]]);
-    // }
-
-    // if(op>k){
-    //     cout<<-1<<endl;
-    //     return;
-    // }
-    // int temp=op;
-    // vector<string> v;
-    // while(op--){
-    //     if(s==t)    return;
-    //     set<char> st;
-    //     set<char> s2;
-    //     for(int i=n-1;i>=1;i--){
-            
-    //         if((i==n-1)&& s[i]==t[i])   continue;
-    //         // if(s[i]!=t[i]){
-    //         //     if(s[i-1]==t[i])    s[i]=s[i-1];
-    //         //     else    s[i]=s[i-1];
-    //         // }
-    //         if(s[i]==t[i]){
-    //             if(st.find(s[i-1])!=st.end() && s2.find(s[i-1])==s2.end()) s[i] = s[i-1];
-    //         }
-    //         else{
-    //             s[i]=s[i-1];
-    //         }
-    //         st.insert(t[i]);
-    //         s2.insert(s[i]);
-    //     }
-    //     debug(s);
-    //     v.push_back(s);
-    //     // cout<<s<<endl;
-    // }
-    // // if(s!=t) {
-    // //     for(auto i:v)   cout<<i<<endl;
-    // //     cout<<-1<<endl;
-    // //     return;
-    // // }
-    // cout<<temp<<endl;
-    // for(auto i:v)   cout<<i<<endl;
-
-    
-
+    cout << dp[x]%MOD <<endl;
 }
 
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) {
         solve();
     }

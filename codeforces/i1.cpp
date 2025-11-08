@@ -95,94 +95,46 @@ bool isPrime(int n) {
     }
     return true;
 }
-
+static bool cmp(pair<pair<int,int>,int>a ,pair<pair<int,int>,int>b ){
+    return a.second<b.second;
+}
 void solve() {
     int n,k;
     cin>>n>>k;
-    string s;
-    cin>>s;
-    string t;
-    cin>>t;
-    //edge 
-    // if(s[0]!=t[0]){
-    //     cout<<-1<<endl;
-    //     return;
-    // }
-    // if(s==t){
-    //     cout<<0<<endl;
-    //     return;
-    // }
-    // map<char,int> m1;
-    // map<char,int> m2;
-    // map<char,int> mp;
+    vector<pair<pair<int,int>,int>> v;
+    map<pair<int,int>,int> mp;
+    while(k--){
+        int l,r,m;
+        cin>>l>>r>>m;
+        v.push_back({{l,r},m});
+        mp[{l,r}]=m;
+        if(l-r+1 == n){
+            cout<<-1<<endl;
+            return;
+        }
+    }
+    for(auto i: mp){
+        if(i.second>=n) {
+            cout<<-1<<endl;
+            return;
+        }
+    }
     
-    // for(int i=0;i<n;i++){
-    //     mp[s[i]]=i;
-    // }
+    sort(all(v),cmp);
+    vector<int> ans(n);
+    for(auto i:v){
+        int l=i.first.first;
+        int r=i.first.second;
+        int m=i.second;
+        for(int i=l-1;i<r;i++){
+            ans[i]=m+1;
+        }
 
-    // for(auto i:t){
-    //     if(!mp.count(i))  {
-    //         cout<<-1<<endl;
-    //         return;
-    //     }
-    // }
+    }
+    for(auto i:ans) cout<<i<<" ";
+    cout<<endl;
 
-    // for(int i=n-1;i>=0;i--){
-    //     m1[s[i]]=i;
-    // }
-    // for(int i=n-1;i>=0;i--){
-    //     m2[t[i]]=i;
-    // }
-    // for(int i=0;i<n;i++){
-    //     if(m2[t[i]] < m1[t[i]] ){
-    //         cout<<-1<<endl;
-    //         return;
-    //     }
-    // }
-    // int op=INT_MIN;
-    // for(int i=n-1;i>=0;i--){
-    //     op =max(op,i-mp[t[i]]);
-    // }
 
-    // if(op>k){
-    //     cout<<-1<<endl;
-    //     return;
-    // }
-    // int temp=op;
-    // vector<string> v;
-    // while(op--){
-    //     if(s==t)    return;
-    //     set<char> st;
-    //     set<char> s2;
-    //     for(int i=n-1;i>=1;i--){
-            
-    //         if((i==n-1)&& s[i]==t[i])   continue;
-    //         // if(s[i]!=t[i]){
-    //         //     if(s[i-1]==t[i])    s[i]=s[i-1];
-    //         //     else    s[i]=s[i-1];
-    //         // }
-    //         if(s[i]==t[i]){
-    //             if(st.find(s[i-1])!=st.end() && s2.find(s[i-1])==s2.end()) s[i] = s[i-1];
-    //         }
-    //         else{
-    //             s[i]=s[i-1];
-    //         }
-    //         st.insert(t[i]);
-    //         s2.insert(s[i]);
-    //     }
-    //     debug(s);
-    //     v.push_back(s);
-    //     // cout<<s<<endl;
-    // }
-    // // if(s!=t) {
-    // //     for(auto i:v)   cout<<i<<endl;
-    // //     cout<<-1<<endl;
-    // //     return;
-    // // }
-    // cout<<temp<<endl;
-    // for(auto i:v)   cout<<i<<endl;
-
-    
 
 }
 
