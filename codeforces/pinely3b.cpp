@@ -100,24 +100,25 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n,a;
-    cin>>n>>a;
-    vector<int> v(n);
-    for(int i=0;i<n;i++)    cin>>v[i];
-    int cnt =0;
-    for(int i=0;i<n;i++)  {
-        if(a>=v[i])  cnt++;
-        else    break;
+    int n;
+    cin >> n;
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+
+    ll mx = *max_element(a.begin(), a.end());
+
+    for(ll k = 2; k <= mx * 2; k <<= 1) { 
+        set<ll> s;
+        for(ll x : a) {
+            s.insert(x % k);     
+        }
+        if(s.size() == 2) {      
+            cout << k << "\n";
+            return;
+        }
     }
-    if(cnt > ceil((double)n/2)) {
-        cout<<a-1<<endl;
-        return;
-    }  
-
-
-    cout<<a+1<<endl;
-
 }
+
 
 int main() {
     ios::sync_with_stdio(0);

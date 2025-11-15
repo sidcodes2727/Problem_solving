@@ -99,24 +99,76 @@ bool isPrime(int n) {
     return true;
 }
 
+
 void solve() {
-    int n,a;
-    cin>>n>>a;
+    int n;
+    cin>>n;
     vector<int> v(n);
     for(int i=0;i<n;i++)    cin>>v[i];
-    int cnt =0;
-    for(int i=0;i<n;i++)  {
-        if(a>=v[i])  cnt++;
-        else    break;
+    string x;
+    cin>>x;
+    vector<int> minL(n,-1);
+    vector<int> minR(n,-1);
+    vector<int> maxL(n,-1);
+    vector<int> maxR(n,-1);
+    int mnVal = v[0], mxVal = v[0];
+    int mnIdx = 0,  mxIdx = 0;
+    for(int i = 0; i < n; i++){
+        if(v[i] < mnVal){
+            mnVal = v[i];
+            mnIdx = i;
+        }
+        if(v[i] > mxVal){
+            mxVal = v[i];
+            mxIdx = i;
+        }
+        minL[i] = mnIdx;
+        maxL[i] = mxIdx;
     }
-    if(cnt > ceil((double)n/2)) {
-        cout<<a-1<<endl;
+    mnVal = v[n-1], mxVal = v[n-1];
+    mnIdx = n-1, mxIdx = n-1;
+    for(int i = n-1; i >= 0; i--){
+        if(v[i] < mnVal){
+            mnVal = v[i];
+            mnIdx = i;
+        }
+        if(v[i] > mxVal){
+            mxVal = v[i];
+            mxIdx = i;
+        }
+        minR[i] = mnIdx;
+        maxR[i] = mxIdx;
+    }
+    debug(minL);
+    debug(minR);
+    debug(maxL);
+    debug(maxR);
+    int cnt=0;
+    for(auto i:x)   cnt+=(i=='1');
+    if(cnt>5) {
+        cout<<-1<<endl;
         return;
-    }  
+    }
+    // cout<<cnt<<endl;
+    vector<pair<int,int>> ans;
+    for(int i=0;i<n;i++){
+        if(x[i]=='1'){
+            if(!(minL[i]!=i && maxR[i]!=i) && !(minR[i]!=i && maxL[i]!=i)){
+                cout<<-1<<endl;
+                return;
+            }
+            else if(minL[i]!=i && maxR[i]!=i){
+                ans.pb({minL[i]+1,maxR[i]+1});
+            }
+            else if(minR[i]!=i && maxL[i]!=i){
+                ans.pb({minR[i]+1,maxL[i]+1});
+            }
+        }
+    }
 
-
-    cout<<a+1<<endl;
-
+    cout<<cnt<<endl;
+    for(auto i:ans) cout<<i.first<<" "<<i.second<<endl;
+    
 }
 
 int main() {

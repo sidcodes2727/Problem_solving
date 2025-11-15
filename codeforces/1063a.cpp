@@ -98,24 +98,29 @@ bool isPrime(int n) {
     }
     return true;
 }
+// bool check(map<int,int> mp,int req){
+//     int cnt=0;
 
+//     for(auto &i:mp){
+//         if(i.second >= 2) cnt+=i.second/2;
+
+//     }
+//     // if(mp.rbegin()->first != mx) return 0;
+//     return cnt>=req;
+// }
 void solve() {
-    int n,a;
-    cin>>n>>a;
+    int n;
+    cin>>n;
     vector<int> v(n);
     for(int i=0;i<n;i++)    cin>>v[i];
-    int cnt =0;
-    for(int i=0;i<n;i++)  {
-        if(a>=v[i])  cnt++;
-        else    break;
+    sort(v.rbegin(),v.rend());
+    for(int i=n-2;i>=1 ;i-=2){
+        if(v[i]!=v[i-1]){
+            pno;
+            return;
+        }
     }
-    if(cnt > ceil((double)n/2)) {
-        cout<<a-1<<endl;
-        return;
-    }  
-
-
-    cout<<a+1<<endl;
+    pyes;
 
 }
 

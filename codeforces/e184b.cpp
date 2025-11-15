@@ -100,26 +100,44 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n,a;
-    cin>>n>>a;
-    vector<int> v(n);
-    for(int i=0;i<n;i++)    cin>>v[i];
-    int cnt =0;
-    for(int i=0;i<n;i++)  {
-        if(a>=v[i])  cnt++;
-        else    break;
-    }
-    if(cnt > ceil((double)n/2)) {
-        cout<<a-1<<endl;
+    string s;
+    cin>>s;
+    int n=s.size();
+    // if(s[0]=='>' && s[n-1]=='*' || s[0]=='>' && s[n-1]=='<' || s[0]=='*' && s[n-1]=='*' || s[0]=='*' && s[n-1]=='<'){
+    //     cout<<-1<<endl;
+    //     return;
+    // }
+
+    for(int i=0;i<n-1;i++){
+        if(s[i]=='>' && s[i+1]=='*' || s[i]=='>' && s[i+1]=='<' || s[i]=='*' && s[i+1]=='*' || s[i]=='*' && s[i+1]=='<'){
+        cout<<-1<<endl;
         return;
-    }  
+    } 
+}
+    // ig only edge case of *
+    if(n==1 && s[0]=='*'){
+        cout<<1<<endl;
+        return;
+    }
+    int c1=0;
+    int c2=0;
+    int i=0;
+    int j=n-1;
+    while((s[i]=='<' || s[i]=='*') && i<n){
+        c1++;
+        i++;
+    }   
+    while((s[j]=='>' || s[j]=='*') && j>=0){
+        c2++;
+        j--;
+    }
 
-
-    cout<<a+1<<endl;
-
+    cout<<max(c1,c2)<<endl;
+    
 }
 
 int main() {
+    
     ios::sync_with_stdio(0);
     cin.tie(0);
     int t = 1;

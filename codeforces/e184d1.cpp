@@ -78,8 +78,8 @@ Matrix power(Matrix M, ll n) {
     }
     return R;
 }
-vector<int> sieve(int n) {
-    vector<int> isPrime(n + 1, 1);
+vector<ll> sieve(ll n) {
+    vector<ll> isPrime(n + 1, 1);
     isPrime[0] = isPrime[1] = 0;
     for (int i = 2; i*i <= n; i++)
         if (isPrime[i])
@@ -100,22 +100,22 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n,a;
-    cin>>n>>a;
-    vector<int> v(n);
-    for(int i=0;i<n;i++)    cin>>v[i];
-    int cnt =0;
-    for(int i=0;i<n;i++)  {
-        if(a>=v[i])  cnt++;
-        else    break;
-    }
-    if(cnt > ceil((double)n/2)) {
-        cout<<a-1<<endl;
+    ll x,y,k;
+    cin>>x>>y>>k;
+    // // all eles less than y will not be removed so if k is less than y then we already have the ans 
+    if(k<y){
+        cout<<k<<endl;
         return;
-    }  
+    }
+    if(((y-x)*1e12/y) < k){
+        cout<<-1<<endl;
+        return;
+    }
+    
+
+    
 
 
-    cout<<a+1<<endl;
 
 }
 

@@ -100,22 +100,26 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n,a;
-    cin>>n>>a;
-    vector<int> v(n);
-    for(int i=0;i<n;i++)    cin>>v[i];
-    int cnt =0;
-    for(int i=0;i<n;i++)  {
-        if(a>=v[i])  cnt++;
-        else    break;
+    int n;
+    cin>>n;
+    vector<ll> v(n+1);
+    for(int i=1;i<=n;i++)    cin>>v[i];
+    vector<ll> pref(n+1);
+    for(int i=1;i<=n;i++){
+        pref[i]=pref[i-1]+v[i];
     }
-    if(cnt > ceil((double)n/2)) {
-        cout<<a-1<<endl;
-        return;
-    }  
+    ll ts= pref[n];
+    ll b=LLONG_MAX;
+    ll pr=0;
+    for(int i=1;i<=n;i++){
+        b= min(b, 1LL*i*i-i-pref[i-1]);
+        pr=max(pr, 1LL*i*i+i-pref[i]-b);
 
+    }
 
-    cout<<a+1<<endl;
+    cout<<ts+pr<<endl;
+    return;
+
 
 }
 

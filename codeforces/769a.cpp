@@ -100,23 +100,21 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n,a;
-    cin>>n>>a;
-    vector<int> v(n);
-    for(int i=0;i<n;i++)    cin>>v[i];
-    int cnt =0;
-    for(int i=0;i<n;i++)  {
-        if(a>=v[i])  cnt++;
-        else    break;
+    int n;
+    cin>>n;
+    string s;
+    cin>>s;
+    int z=0,o=0;
+    for(auto i:s){
+        z+=(i=='0');
+        o+=(i=='1');
+
     }
-    if(cnt > ceil((double)n/2)) {
-        cout<<a-1<<endl;
+    if(z>1 || o>1 ) {
+        pno;
         return;
-    }  
-
-
-    cout<<a+1<<endl;
-
+    }
+    pyes;
 }
 
 int main() {

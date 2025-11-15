@@ -98,25 +98,30 @@ bool isPrime(int n) {
     }
     return true;
 }
-
-void solve() {
-    int n,a;
-    cin>>n>>a;
-    vector<int> v(n);
-    for(int i=0;i<n;i++)    cin>>v[i];
-    int cnt =0;
-    for(int i=0;i<n;i++)  {
-        if(a>=v[i])  cnt++;
-        else    break;
+bool powOftwo(int n){
+    return (n > 0) && ((n & (n - 1)) == 0);
+}
+int search(int n){
+    for(int i=n;i>=1; i--){
+        if(powOftwo(i)) return i;
     }
-    if(cnt > ceil((double)n/2)) {
-        cout<<a-1<<endl;
-        return;
-    }  
 
-
-    cout<<a+1<<endl;
-
+    return 1;
+}
+void solve() {
+    int n;
+    cin>>n;
+    int num = search(n-1);
+    for(int i=1;i<n;i++){
+        if(i==num)  break;
+        cout<<i<<" ";
+    }
+    cout<<0<<" ";
+    for(int i=num;i<n;i++){
+        cout<<i<<" ";
+    }
+    cout<<endl;
+    
 }
 
 int main() {

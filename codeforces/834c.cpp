@@ -100,23 +100,24 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n,a;
-    cin>>n>>a;
-    vector<int> v(n);
-    for(int i=0;i<n;i++)    cin>>v[i];
-    int cnt =0;
-    for(int i=0;i<n;i++)  {
-        if(a>=v[i])  cnt++;
-        else    break;
-    }
-    if(cnt > ceil((double)n/2)) {
-        cout<<a-1<<endl;
+    int l,r,x;
+    int a,b;
+    cin>>l>>r>>x;
+    cin>>a>>b;
+    if(b>r || b<l) {
+        cout<<-1<<endl;
         return;
-    }  
+    }
+    int ops=0;
+    if(a==b)   {
+        cout<<ops<<endl;
+        return;
+    }
+    if(abs(a-b) >=x){
+        cout<<1<<endl;
+        return;
 
-
-    cout<<a+1<<endl;
-
+    }
 }
 
 int main() {

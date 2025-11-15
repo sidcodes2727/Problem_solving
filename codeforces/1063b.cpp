@@ -100,24 +100,51 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n,a;
-    cin>>n>>a;
+    int n;
+    cin>>n;
     vector<int> v(n);
     for(int i=0;i<n;i++)    cin>>v[i];
-    int cnt =0;
-    for(int i=0;i<n;i++)  {
-        if(a>=v[i])  cnt++;
-        else    break;
+    string x;
+    cin>>x;
+    int mxI;
+    int mx=INT_MIN;
+    int miI;
+    int mi=INT_MAX;
+    for(int i=0;i<n;i++){
+        if(v[i]>mx){
+            mx=v[i];
+            mxI=i;
+        }
+        if(v[i]<mi){
+            mi=v[i];
+            miI=i;
+        }
     }
-    if(cnt > ceil((double)n/2)) {
-        cout<<a-1<<endl;
+
+    if(x[0]=='1' || x[n-1]=='1')  {
+        cout<<-1<<endl;
         return;
-    }  
-
-
-    cout<<a+1<<endl;
-
+    }
+    for(int i=0;i<n;i++){
+        if(x[i] == '1' && (v[i]==mx || v[i]==mi)){
+            cout<<-1<<endl;
+            return; 
+        }
+    }
+    int cnt=0;
+    for(auto i:x)   cnt+=(i=='1');
+    if(cnt>5) {
+        cout<<-1<<endl;
+        return;
+    }
+    cout<<cnt<<endl;
+    for(int i=0;i<n;i++){
+        if(x[i]=='1' && (i>miI && i<mxI)){
+            cout<<1<<" "<<n<<endl;
+        }
+    }   
 }
+
 
 int main() {
     ios::sync_with_stdio(0);
