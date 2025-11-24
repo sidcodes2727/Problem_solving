@@ -12,7 +12,10 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 #define pyes cout<<"YES\n"
 #define pno cout<<"NO\n"
 typedef pair<int,int> pii;
+typedef pair<ll,ll> pll;
 typedef vector<int> vi;
+typedef vector<ll> vll;
+typedef vector<pll> vpll;
 typedef vector<pii> vpii;
 
 const int MOD = 1e9+7;
@@ -53,6 +56,28 @@ int modpow(int a, int b, int mod = MOD) {
     return res;
 }
 
+struct Matrix {
+    ll a[2][2];
+};
+
+Matrix multiply(Matrix A, Matrix B) {
+    Matrix C;
+    C.a[0][0] = (A.a[0][0]*B.a[0][0] + A.a[0][1]*B.a[1][0]) % MOD;
+    C.a[0][1] = (A.a[0][0]*B.a[0][1] + A.a[0][1]*B.a[1][1]) % MOD;
+    C.a[1][0] = (A.a[1][0]*B.a[0][0] + A.a[1][1]*B.a[1][0]) % MOD;
+    C.a[1][1] = (A.a[1][0]*B.a[0][1] + A.a[1][1]*B.a[1][1]) % MOD;
+    return C;
+}
+
+Matrix power(Matrix M, ll n) {
+    Matrix R = {{{1, 0}, {0, 1}}}; // identity
+    while(n){
+        if(n & 1) R = multiply(R, M);
+        M = multiply(M, M);
+        n >>= 1;
+    }
+    return R;
+}
 vector<int> sieve(int n) {
     vector<int> isPrime(n + 1, 1);
     isPrime[0] = isPrime[1] = 0;
@@ -75,14 +100,27 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    ll a,b,m;
-    cin>>a>>b>>m;
-    ll x=m/a;
-    debug((int)x);
-    ll y=m/b;
-    debug((int)y);
-    cout<<x+y+2<<endl;
-} 
+    int n,k;
+    cin>>n>>k;
+    vector<int>v(n);
+    for(int i=0;i<n;i++)    cin>>v[i];
+    vector<int> bitnum(32,0);
+    ll ans= (1LL<<32)-1;
+    for(int i=0;i<n;i++){
+        ans&=v[i];
+        for(int j=0;j<32;j++){
+            if(v[i] & (1LL<<j)) bitnum[j]++;
+        }
+    } 
+    for(int j=30;j>=0;j--){
+        if(k>= (n-bitnum[j])){
+            ans |= (1LL<<j);
+            k-=(n-bitnum[j]);
+        }
+    }
+    cout<<ans<<endl;
+    return;
+}
 
 int main() {
     ios::sync_with_stdio(0);
