@@ -104,8 +104,8 @@ void solve() {
     cin>>n;
     vector<int> v(n);
     for(int i=0;i<n;i++)    cin>>v[i];
-    int nz=0;
-    int sm=0;
+    ll nz=0;
+    ll sm=0;
 
     for(int i=0;i<n;i++){
         if(v[i]!=0) nz++;
