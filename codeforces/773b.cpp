@@ -30,7 +30,7 @@ void _print(string t) {cerr << t;}
 void _print(char t) {cerr << t;}
 void _print(long double t) {cerr << t;}
 void _print(double t) {cerr << t;}
-void _print(long long t) {cerr << t;}
+void _print(unsigned long long t) {cerr << t;}
 template <class T, class V> void _print(pair<T, V> p);
 template <class T> void _print(vector<T> v);
 template <class T> void _print(set<T> v);
@@ -98,54 +98,25 @@ bool isPrime(int n) {
     }
     return true;
 }
+
 void solve() {
     ll n;
-    cin >> n;
-    vector<ll> v(n * 2);
-    map<ll, ll> mp;
-    for(int i = 0; i < n * 2; i++) {
-        cin >> v[i];
-        mp[v[i]]++;
+    cin>>n;
+    vector<ll> v(n);
+    for(int i=0;i<n;i++)    cin>>v[i];
+    set<ll> s(all(v));
+    vector<ll> ans;
+    for(int i=0;i<s.size();i++){
+        ans.push_back(s.size());
     }
-    vector<ll> req;
-    for(auto i : mp) req.push_back(i.second);
-    sort(req.rbegin(), req.rend());
-    
-    ll s1 = 0;
-    ll s2 = 0;
-    ll ans = 0;
-    for(auto x : req) {
-        if(x % 2 != 0) {
-            ans++;
-            if(s1 <= s2) {
-                s1 += (x - 1);
-                s2 += 1;
-            } else {
-                s2 += (x - 1);
-                s1 += 1;
-            }
-        } 
-        else {
-            ll min_k = max(1LL, x - (n - s2));
-            ll max_k = min(x - 1, n - s1);
-            ll k = -1;
-            if(min_k <= max_k) {
-                if(min_k % 2 != 0) k = min_k; 
-                else if(min_k + 1 <= max_k) k = min_k + 1;
-            }
+    int cntr=s.size()+1;
+    for(int i=s.size();i<n;i++){
+        ans.push_back(cntr);
+        cntr++;
+    }
+    for(auto i:ans)   cout<<i<<" ";
+    cout<<endl;
 
-            if(k != -1) {
-                ans += 2;
-                s1 += k;
-                s2 += (x - k);
-            } else {
-                ll take = min(n - s1, x);
-                s1 += take;
-                s2 += (x - take);
-            }
-        }
-    }
-    cout << ans << endl;
 }
 
 int main() {
