@@ -31,6 +31,8 @@ void _print(char t) {cerr << t;}
 void _print(long double t) {cerr << t;}
 void _print(double t) {cerr << t;}
 void _print(unsigned long long t) {cerr << t;}
+void _print(long long t) {cerr << t;}
+
 template <class T, class V> void _print(pair<T, V> p);
 template <class T> void _print(vector<T> v);
 template <class T> void _print(set<T> v);
@@ -100,23 +102,37 @@ bool isPrime(int n) {
 }
 
 void solve() {
-    int n,a;
-    cin>>n>>a;
-    vector<int> v(n);
+    ll n;
+    cin>>n;
+    vll v(n);
     for(int i=0;i<n;i++)    cin>>v[i];
-    int cnt =0;
-    for(int i=0;i<n;i++)  {
-        if(a>=v[i])  cnt++;
-        else    break;
+    int mi=1;
+    int mx=n;
+    int l=0;
+    int r=n-1;
+    while(l<=r){
+        if(v[l]==mi){
+            mi++;
+            l++;
+        }
+        else if(v[l]==mx){
+            mx--;
+            l++;
+        }
+        else if(v[r]==mi){
+            mi++;
+            r--;
+        }
+        else if(v[r]==mx){
+            mx--;
+            r--;
+        }
+        else{
+            cout<<l+1<<" "<<r+1<<endl;
+            return;
+        }
     }
-    if(cnt > ceil((double)n/2)) {
-        cout<<a-1<<endl;
-        return;
-    }  
-
-
-    cout<<a+1<<endl;
-
+    cout<<-1<<endl;
 }
 
 int main() {

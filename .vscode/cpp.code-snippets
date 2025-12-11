@@ -37,6 +37,8 @@
             "void _print(long double t) {cerr << t;}",
             "void _print(double t) {cerr << t;}",
             "void _print(unsigned long long t) {cerr << t;}",
+            "void _print(long long t) {cerr << t;}",
+            "",
             "template <class T, class V> void _print(pair<T, V> p);",
             "template <class T> void _print(vector<T> v);",
             "template <class T> void _print(set<T> v);",
