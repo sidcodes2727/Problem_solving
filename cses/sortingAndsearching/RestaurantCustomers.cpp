@@ -1,7 +1,10 @@
+//sidcodes
 #include<bits/stdc++.h>
 using namespace std;
+
 typedef long long ll;
 typedef priority_queue<int, vector<int>, greater<int>> pqmin;
+
 #define endl '\n'
 #define pb push_back
 #define all(x) (x).begin(), (x).end()
@@ -11,12 +14,14 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 #define fr(i,n) for(int i=0;i<n;i++)
 #define pyes cout<<"YES\n"
 #define pno cout<<"NO\n"
+
 typedef pair<int,int> pii;
 typedef pair<ll,ll> pll;
 typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef vector<pll> vpll;
 typedef vector<pii> vpii;
+typedef vector<vll> vvll;
 
 const int MOD = 1e9+7;
 
@@ -25,6 +30,7 @@ const int MOD = 1e9+7;
 #else
 #define debug(x)
 #endif
+
 void _print(int t) {cerr << t;}
 void _print(string t) {cerr << t;}
 void _print(char t) {cerr << t;}
@@ -45,11 +51,14 @@ template <class T> void _print(set<T> v) {cerr << "[ "; for (T i : v) {_print(i)
 template <class T> void _print(multiset<T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map<T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
-int gcd(int a, int b) { return b == 0 ? a : gcd(b, a % b); }
-int lcm(int a, int b) { return (a / gcd(a, b)) * b; }
 
-int modpow(int a, int b, int mod = MOD) {
-    int res = 1;
+ll gcd(ll a, ll b) { return b == 0 ? a : gcd(b, a % b); }
+ll lcm(ll a, ll b) { return (a / gcd(a, b)) * b; }
+
+vector<ll> fact, invfact;
+
+ll modpow(ll a, ll b, ll mod = MOD) {
+    ll res = 1;
     while (b) {
         if (b & 1) res = (res * a) % mod;
         a = (a * a) % mod;
@@ -58,87 +67,93 @@ int modpow(int a, int b, int mod = MOD) {
     return res;
 }
 
-struct Matrix {
-    ll a[2][2];
-};
+void init_nck(int maxn){
+    fact.assign(maxn+1, 1);
+    invfact.assign(maxn+1, 1);
 
-Matrix multiply(Matrix A, Matrix B) {
-    Matrix C;
-    C.a[0][0] = (A.a[0][0]*B.a[0][0] + A.a[0][1]*B.a[1][0]) % MOD;
-    C.a[0][1] = (A.a[0][0]*B.a[0][1] + A.a[0][1]*B.a[1][1]) % MOD;
-    C.a[1][0] = (A.a[1][0]*B.a[0][0] + A.a[1][1]*B.a[1][0]) % MOD;
-    C.a[1][1] = (A.a[1][0]*B.a[0][1] + A.a[1][1]*B.a[1][1]) % MOD;
-    return C;
+    for(int i = 1; i <= maxn; i++)
+        fact[i] = (fact[i-1] * i) % MOD;
+
+    invfact[maxn] = modpow(fact[maxn], MOD - 2);
+
+    for(int i = maxn-1; i >= 0; i--)
+        invfact[i] = (invfact[i+1] * (i+1)) % MOD;
 }
 
-Matrix power(Matrix M, ll n) {
-    Matrix R = {{{1, 0}, {0, 1}}}; // identity
-    while(n){
-        if(n & 1) R = multiply(R, M);
-        M = multiply(M, M);
-        n >>= 1;
+ll nck(ll n, ll r){
+    if(r < 0 || r > n) return 0;
+    return (((fact[n] * invfact[r]) % MOD) * invfact[n-r]) % MOD;
+}
+
+
+vector<vll> adj; 
+vll depth, parent, sub;
+vector<vll> dp;     
+
+void dfs(ll u, ll p) {
+    parent[u] = p;
+    sub[u] = 1;
+
+    for (auto v : adj[u]) {
+        if (v == p) continue;
+        depth[v] = depth[u] + 1;
+        dfs(v, u);
+        sub[u] += sub[v];
     }
-    return R;
-}
-vector<int> sieve(int n) {
-    vector<int> isPrime(n + 1, 1);
-    isPrime[0] = isPrime[1] = 0;
-    for (int i = 2; i*i <= n; i++)
-        if (isPrime[i])
-            for (int j = i*i; j <= n; j += i)
-                isPrime[j] = 0;
-    return isPrime;
 }
 
-bool isPrime(int n) {
-    if (n <= 1) return false;
-    if (n <= 3) return true;
-    if (n % 2 == 0 || n % 3 == 0) return false;
-    for (int i = 5; i * i <= n; i += 6) {
-        if (n % i == 0 || n % (i + 2) == 0)
-            return false;
-    }
-    return true;
-}
 
 void solve() {
     ll n;
     cin>>n;
-    vll v(n);
-    for(auto &i:v)   cin>>i;
-    ll sm=0;
-    for(auto i:v)   sm+=i;
-    vll pref(n,0);
-    vll suff(n,0);
-    pref[0]=0;
-    suff[0]=sm-pref[0];
-    for(int i=1;i<n;i++){
-        pref[i]=pref[i-1]+v[i];
-        suff[i]=sm-pref[i];
+    // multiset<ll> arr;
+    // multiset<ll> dep;
+    // ll mx=-1;
+    // for(int i=0;i<n;i++){
+    //     ll a,b;
+    //     cin>>a>>b;
+    //     mx=max({a,b,mx});
+    //     arr.insert(a);
+    //     dep.insert(b);
+    // }
+    // ll ans=1;
+    // ll cus=0;
+    // for(int i=1;i<=mx;i++){
+    //     if(arr.find(i)!=arr.end()){
+    //         cus++;
+    //     }
+    //     if(dep.find(i)!=dep.end()){
+    //         cus--;
+    //     }
+    //     ans=max(ans,cus);
+    // }
+    // cout<<ans<<endl;
+    vpll ev;
+    for(int i=0;i<n;i++){
+        ll a,b;
+        cin>>a>>b;
+        ev.pb({a,1});
+        ev.pb({b,-1});
     }
-    debug(pref);
-    debug(suff);
-    for(int i=0;i<n-1;i++){
-        if(pref[i]>=sm){
-            pno;
-            return;
-        }
+    sort(all(ev),[](auto x,auto y){
+        if(x.first==y.first)    return x.second<y.second;
+        return x.first<y.first;
+    });
+    ll cus=0,ans=0;
+    for(auto &e:ev){
+        cus+=e.second;
+        ans=max(ans,cus);
     }
-    for(int i=0;i<n-1;i++){
-        if(suff[i]>=sm){
-            pno;
-            return;
-        }
-    }
-    pyes;
+    cout<<ans<<endl;
+}
 
-}   
 
 int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
+
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--) {
         solve();
     }
