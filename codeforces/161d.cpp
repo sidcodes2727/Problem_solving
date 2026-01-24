@@ -89,51 +89,34 @@ ll nck(ll n, ll r){
 vector<vll> adj; 
 vll depth, parent, sub;
 vector<vll> dp;     
+ll ans=0,k,n;
 
-void dfs(ll u,ll p=-1){
-    sub[u]=1;
-    for(auto i:adj[u]){
-        if(i==p)    continue;
-        depth[i]=depth[u]+1;
-        dfs(i,u);
-        sub[u]+=sub[i];
+void dfs(ll u, ll p) {
+    dp[u][0]=1;
+    for (auto v : adj[u]) {
+        if (v == p) continue;
+        dfs(v, u);
+        for(int i=0;i<k;i++){
+            ans+=dp[u][i]*dp[v][k-i-1];
+        }
+        for(int i=0;i<k;i++){
+            dp[u][i+1]+=dp[v][i];
+        }
     }
 }
 
-void solve() {
-    ll n,k;
+
+void solve(){
     cin>>n>>k;
     adj.assign(n+1,vll());
-    for(int i=1;i<n;i++){
+    for(int i=0;i<n-1;i++){
         ll u,v;
         cin>>u>>v;
         adj[u].pb(v);
         adj[v].pb(u);
     }
-    depth.assign(n+1,0);
-    sub.assign(n+1,0);
-    dfs(1);
-    // debug(depth);
-    ll ans=0;
-    map<ll,ll,greater<ll>> mp;
-    for(int i=1;i<=n;i++){
-        mp[depth[i]-(sub[i]-1)]++;
-    }
-    // debug(mp);
-    ll need=k;
-    for(auto i:mp){
-        if(need>=i.second){
-            ans+=i.second*i.first;
-            need-=i.second;
-            if(need==0) break;
-        }
-        else{
-            ans+=i.first*need;
-            break;
-        }
-        // debug(ans);
-        // debug(need);
-    }
+    dp.assign(n+1,vll(k+1));
+    dfs(1,-1);
     cout<<ans<<endl;
 }
 

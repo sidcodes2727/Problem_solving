@@ -12,8 +12,8 @@ typedef priority_queue<int, vector<int>, greater<int>> pqmin;
 #define fi first
 #define se second
 #define fr(i,n) for(int i=0;i<n;i++)
-#define pyes cout<<"YES\n"
-#define pno cout<<"NO\n"
+#define pyes cout<<"Yes\n"
+#define pno cout<<"No\n"
 
 typedef pair<int,int> pii;
 typedef pair<ll,ll> pll;
@@ -86,56 +86,54 @@ ll nck(ll n, ll r){
 }
 
 
-vector<vll> adj; 
+// vector<vll> adj; 
 vll depth, parent, sub;
 vector<vll> dp;     
-
-void dfs(ll u,ll p=-1){
-    sub[u]=1;
-    for(auto i:adj[u]){
-        if(i==p)    continue;
-        depth[i]=depth[u]+1;
-        dfs(i,u);
-        sub[u]+=sub[i];
+vll leaf;
+void dfs(ll u, ll p, vvll &adj) {
+    bool fnd=1;
+    for (auto v : adj[u]) {
+        if (v == p) continue;
+        fnd=0;
+        dfs(v, u, adj);
     }
+    if(fnd) leaf[u]=1;
+    else    leaf[u]=0;
 }
 
+void dfs2(ll u,ll p,vvll &adj, vll &ans){
+
+    for(auto v:adj[u]){
+        if(v==p)    continue;
+        ans[u]+=leaf[v];
+        dfs2(v,u,adj,ans);
+    }
+
+}
 void solve() {
-    ll n,k;
-    cin>>n>>k;
-    adj.assign(n+1,vll());
+    ll n;
+    cin>>n;
+    vvll adj(n+1);
     for(int i=1;i<n;i++){
-        ll u,v;
-        cin>>u>>v;
-        adj[u].pb(v);
-        adj[v].pb(u);
+        ll u;
+        cin>>u;
+        adj[u].pb(i+1);
+        adj[i+1].pb(u);
     }
-    depth.assign(n+1,0);
-    sub.assign(n+1,0);
-    dfs(1);
-    // debug(depth);
-    ll ans=0;
-    map<ll,ll,greater<ll>> mp;
+    leaf.assign(n+1,0);
+    dfs(1,-1,adj);
+    vll ans(n+1,0);
+    dfs2(1,-1,adj,ans);
+    debug(ans);
     for(int i=1;i<=n;i++){
-        mp[depth[i]-(sub[i]-1)]++;
+        if(ans[i]<3 && !leaf[i]){
+            pno;
+            return;
+        }    
     }
-    // debug(mp);
-    ll need=k;
-    for(auto i:mp){
-        if(need>=i.second){
-            ans+=i.second*i.first;
-            need-=i.second;
-            if(need==0) break;
-        }
-        else{
-            ans+=i.first*need;
-            break;
-        }
-        // debug(ans);
-        // debug(need);
-    }
-    cout<<ans<<endl;
-}
+    pyes;
+
+}   
 
 
 int main() {

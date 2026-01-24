@@ -89,20 +89,21 @@ ll nck(ll n, ll r){
 vector<vll> adj; 
 vll depth, parent, sub;
 vector<vll> dp;     
-
-void dfs(ll u,ll p=-1){
-    sub[u]=1;
-    for(auto i:adj[u]){
-        if(i==p)    continue;
-        depth[i]=depth[u]+1;
-        dfs(i,u);
-        sub[u]+=sub[i];
+vll leaf;
+vll mx;
+void dfs(ll u, ll p) {
+    mx[u]=depth[u];
+    for (auto v : adj[u]) { 
+        if (v == p) continue;
+        depth[v] = depth[u] + 1;
+        dfs(v, u);
+        mx[u]=max(mx[u],mx[v]);
     }
 }
 
 void solve() {
-    ll n,k;
-    cin>>n>>k;
+    ll n;
+    cin>>n;
     adj.assign(n+1,vll());
     for(int i=1;i<n;i++){
         ll u,v;
@@ -111,30 +112,22 @@ void solve() {
         adj[v].pb(u);
     }
     depth.assign(n+1,0);
-    sub.assign(n+1,0);
-    dfs(1);
-    // debug(depth);
-    ll ans=0;
-    map<ll,ll,greater<ll>> mp;
+    mx.assign(n+1,0);
+    dfs(1,-1);
+    ll req=0;
+    vll diff(n+2,0);
     for(int i=1;i<=n;i++){
-        mp[depth[i]-(sub[i]-1)]++;
-    }
-    // debug(mp);
-    ll need=k;
-    for(auto i:mp){
-        if(need>=i.second){
-            ans+=i.second*i.first;
-            need-=i.second;
-            if(need==0) break;
+        diff[depth[i]]++;
+        if(mx[i]+1 <= n){
+            diff[mx[i]+1]--;
         }
-        else{
-            ans+=i.first*need;
-            break;
-        }
-        // debug(ans);
-        // debug(need);
     }
-    cout<<ans<<endl;
+    ll curr=0;
+    for(int i=0;i<=n;i++){
+        curr+=diff[i];
+        req=max(req,curr);
+    }
+    cout<<n-req<<endl;
 }
 
 
@@ -143,7 +136,7 @@ int main() {
     cin.tie(0);
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }

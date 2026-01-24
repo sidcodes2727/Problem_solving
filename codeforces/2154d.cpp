@@ -88,21 +88,24 @@ ll nck(ll n, ll r){
 
 vector<vll> adj; 
 vll depth, parent, sub;
-vector<vll> dp;     
-
-void dfs(ll u,ll p=-1){
-    sub[u]=1;
+vector<vll> dp;  
+vll tin,tout;   
+ll tim=0;
+ll n;
+void dfs(ll u,ll p,vll &post){
     for(auto i:adj[u]){
         if(i==p)    continue;
-        depth[i]=depth[u]+1;
-        dfs(i,u);
-        sub[u]+=sub[i];
-    }
+        dfs(i,u,post);
+    }  
+    post.pb(u);
+}
+bool isanc(ll u,ll v){  // v is anc of u ?
+    return tin[v]<=tin[u] && tout[v]>=tout[u];
 }
 
+
 void solve() {
-    ll n,k;
-    cin>>n>>k;
+    cin>>n;
     adj.assign(n+1,vll());
     for(int i=1;i<n;i++){
         ll u,v;
@@ -110,32 +113,17 @@ void solve() {
         adj[u].pb(v);
         adj[v].pb(u);
     }
-    depth.assign(n+1,0);
-    sub.assign(n+1,0);
-    dfs(1);
-    // debug(depth);
-    ll ans=0;
-    map<ll,ll,greater<ll>> mp;
-    for(int i=1;i<=n;i++){
-        mp[depth[i]-(sub[i]-1)]++;
+    vll post;
+    dfs(n,-1,post);
+    cout<<2*(n-1)<<endl;
+    for(auto i:post){
+        if(i==n)    continue;
+        cout<<1<<endl;
+        cout<<2<<" "<<i<<endl;
     }
-    // debug(mp);
-    ll need=k;
-    for(auto i:mp){
-        if(need>=i.second){
-            ans+=i.second*i.first;
-            need-=i.second;
-            if(need==0) break;
-        }
-        else{
-            ans+=i.first*need;
-            break;
-        }
-        // debug(ans);
-        // debug(need);
-    }
-    cout<<ans<<endl;
+
 }
+
 
 
 int main() {
@@ -143,7 +131,7 @@ int main() {
     cin.tie(0);
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }

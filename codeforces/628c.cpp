@@ -89,52 +89,59 @@ ll nck(ll n, ll r){
 vector<vll> adj; 
 vll depth, parent, sub;
 vector<vll> dp;     
+vll leaf;
+void dfs(ll u, ll p) {
+    bool fnd=0;
 
-void dfs(ll u,ll p=-1){
-    sub[u]=1;
-    for(auto i:adj[u]){
-        if(i==p)    continue;
-        depth[i]=depth[u]+1;
-        dfs(i,u);
-        sub[u]+=sub[i];
+    for (auto v : adj[u]) {
+        if (v == p) continue;
+        fnd=1;
+        dfs(v, u);
     }
+    if(!fnd)    leaf[u]=1;
+    
 }
 
+
 void solve() {
-    ll n,k;
-    cin>>n>>k;
+    ll n;
+    cin>>n;
     adj.assign(n+1,vll());
+    vll deg(n+1,0);
+    vpll p;
     for(int i=1;i<n;i++){
         ll u,v;
         cin>>u>>v;
         adj[u].pb(v);
         adj[v].pb(u);
+        p.pb({u,v});
+        deg[u]++;
+        deg[v]++;
     }
-    depth.assign(n+1,0);
-    sub.assign(n+1,0);
-    dfs(1);
-    // debug(depth);
-    ll ans=0;
-    map<ll,ll,greater<ll>> mp;
-    for(int i=1;i<=n;i++){
-        mp[depth[i]-(sub[i]-1)]++;
-    }
-    // debug(mp);
-    ll need=k;
-    for(auto i:mp){
-        if(need>=i.second){
-            ans+=i.second*i.first;
-            need-=i.second;
-            if(need==0) break;
-        }
-        else{
-            ans+=i.first*need;
+    ll node=-1;
+    for(int i=1;i<n;i++){
+        if(deg[i]>=3){
+            node=i;
             break;
         }
-        // debug(ans);
-        // debug(need);
     }
-    cout<<ans<<endl;
+    vll ans(n-1,-1);
+    if(node==-1){
+        for(int i=0;i<n-1;i++){
+            ans[i]=i;
+        }
+    }
+    else{
+        ll cnt=0;
+        for(int i=0;i<n-1;i++){
+            if((p[i].first==node || p[i].second==node) && cnt<=2)   ans[i]=cnt++;
+        }
+        ll temp=cnt;
+        for(int i=0;i<n-1;i++){
+            if(ans[i]==-1)  ans[i]=temp++;
+        }
+    }
+    for(auto i:ans) cout<<i<<endl;
 }
 
 

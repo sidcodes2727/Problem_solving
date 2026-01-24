@@ -90,51 +90,50 @@ vector<vll> adj;
 vll depth, parent, sub;
 vector<vll> dp;     
 
-void dfs(ll u,ll p=-1){
-    sub[u]=1;
-    for(auto i:adj[u]){
-        if(i==p)    continue;
-        depth[i]=depth[u]+1;
-        dfs(i,u);
-        sub[u]+=sub[i];
+void dfs(ll u, ll p) {
+    parent[u] = p;
+    sub[u] = 1;
+
+    for (auto v : adj[u]) {
+        if (v == p) continue;
+        depth[v] = depth[u] + 1;
+        dfs(v, u);
+        sub[u] += sub[v];
     }
 }
 
+
 void solve() {
-    ll n,k;
-    cin>>n>>k;
+    ll n;
+    cin>>n;
+    vll v(n);
+    fr(i,n) cin>>v[i];
     adj.assign(n+1,vll());
+    vll deg(n+1,0);
     for(int i=1;i<n;i++){
         ll u,v;
         cin>>u>>v;
         adj[u].pb(v);
         adj[v].pb(u);
+        deg[u]++;
+        deg[v]++;
     }
-    depth.assign(n+1,0);
-    sub.assign(n+1,0);
-    dfs(1);
-    // debug(depth);
+    vll req;
     ll ans=0;
-    map<ll,ll,greater<ll>> mp;
     for(int i=1;i<=n;i++){
-        mp[depth[i]-(sub[i]-1)]++;
-    }
-    // debug(mp);
-    ll need=k;
-    for(auto i:mp){
-        if(need>=i.second){
-            ans+=i.second*i.first;
-            need-=i.second;
-            if(need==0) break;
+        ans+=v[i-1];
+        for(int j=1;j<deg[i];j++){
+            req.pb(v[i-1]);
         }
-        else{
-            ans+=i.first*need;
-            break;
-        }
-        // debug(ans);
-        // debug(need);
     }
-    cout<<ans<<endl;
+    sort(rall(req));
+    cout<<ans<<" "; 
+    for(int k=2;k<=n-1;k++){
+        ans+=req[k-2];
+        cout<<ans<<" ";
+    }
+    cout<<endl;
+
 }
 
 
@@ -143,7 +142,7 @@ int main() {
     cin.tie(0);
 
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while (t--) {
         solve();
     }

@@ -90,51 +90,39 @@ vector<vll> adj;
 vll depth, parent, sub;
 vector<vll> dp;     
 
-void dfs(ll u,ll p=-1){
-    sub[u]=1;
-    for(auto i:adj[u]){
-        if(i==p)    continue;
-        depth[i]=depth[u]+1;
-        dfs(i,u);
-        sub[u]+=sub[i];
+void dfs(ll u, ll p) {
+    for (auto v : adj[u]) {
+        if (v == p) continue;
+        depth[v] = depth[u] + 1;
+        dfs(v, u);
     }
 }
 
+
 void solve() {
-    ll n,k;
-    cin>>n>>k;
+    ll n,m;
+    cin>>n>>m;
     adj.assign(n+1,vll());
-    for(int i=1;i<n;i++){
+    for(int i=0;i<m;i++){
         ll u,v;
         cin>>u>>v;
         adj[u].pb(v);
         adj[v].pb(u);
     }
     depth.assign(n+1,0);
-    sub.assign(n+1,0);
-    dfs(1);
-    // debug(depth);
-    ll ans=0;
-    map<ll,ll,greater<ll>> mp;
+    dfs(1,-1);
+    ll mx=0;
+    ll mxNode=-1;
     for(int i=1;i<=n;i++){
-        mp[depth[i]-(sub[i]-1)]++;
-    }
-    // debug(mp);
-    ll need=k;
-    for(auto i:mp){
-        if(need>=i.second){
-            ans+=i.second*i.first;
-            need-=i.second;
-            if(need==0) break;
+        if(depth[i]>mx){
+            mxNode=i;
+            mx=depth[i];
         }
-        else{
-            ans+=i.first*need;
-            break;
-        }
-        // debug(ans);
-        // debug(need);
     }
-    cout<<ans<<endl;
+    depth.assign(n+1,0);
+    dfs(mxNode,-1);
+    debug(depth);
+    cout<<*max_element(all(depth))<<endl;
 }
 
 
